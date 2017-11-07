@@ -5,8 +5,9 @@ import operator  # To sort the list
 import traceback
 import psycopg2
 import requests
-from sendgrid_mail import send_mail
+# from sendgrid_mail import send_mail
 from flask import render_template, request
+import smtplib
 
 import utils
 
@@ -122,17 +123,58 @@ def project_register():
         try:
             cursor.execute(query)
             conn.commit()
-            mail_subject = "Registered " + form_dict["pname"] + " for KWoC!"
-            mail_body = open('static/files/project_register_mail.txt').read()
-            mail_body = mail_body.format(form_dict['fname'])
-            mail_check = send_mail(mail_subject, mail_body, form_dict["emailid"])
-            if not mail_check:
-                msg = "Unable to send mail to the following project:\n{}\nGot the follwing error:\n{}"
+            # os.system("python3 smtp_mail.py "+form_dict["emailid"]+" "+form_dict["pname"])
+
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            #Next, log in to the server
+            #print(str(os.environ['PASSWD']))
+
+            from email.mime.multipart import MIMEMultipart
+            from email.mime.text import MIMEText
+
+            me = "Kharagpur Winter of Code <kwoc@kossiitkgp.in>"
+            you = form_dict["emailid"]
+
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = "Registration for "+form_dict["pname"]+" successful"
+            msg['From'] = me
+            msg['To'] = you
+
+            #Send the mail
+            html ="""\
+            <html>
+              <head></head>
+              <body>
+                <p>Hello mentor!<br>
+                   Welcome to KWoC!<br>
+                   Please read the manual <a href="https://kwoc.kossiitkgp.in/static/files/KWoCMentorManual.pdf">here</a>.
+                </p>
+              </body>
+            </html>
+            """ # The /n separates the message from the headers
+
+            #part1 = MIMEText(text, 'plain')
+            part2 = MIMEText(html, 'html')
+
+            #msg.attach(part1)
+            msg.attach(part2)
+
+            try:
+                server.login(str(os.environ['EMAIL']), str(os.environ['PASSWD']))
+                server.sendmail(me, you, msg.as_string())
+
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = "Registration for "+form_dict["pname"]+" by "+form_dict["email_id"]+" successful"
+                msg['From'] = me
+                msg['To'] = me
+
+                server.sendmail("contact@kossiitkgp.in", "contact@kossiitkgp.in", me.as_string())
+                print("Sent")
+            except:
+                msg = "Unable to send mail to "+form_dict["email id"]+" for the following project: "+form_dict["pname"]
                 utils.slack_notification(msg.format(form_dict, traceback.format_exc()))
-            flag = "True"
-            msg = "Your project {} has been successfully registered. Please check your email for instructions."
-            msg = msg.format(form_dict["pname"])
-            msgcode = 1
+
             return {
                 "web": 'index.html',
                 "flag": flag,
