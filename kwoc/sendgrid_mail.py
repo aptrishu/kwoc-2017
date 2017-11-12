@@ -70,7 +70,7 @@ def send_mail(mail_subject, mail_body, to_email):
             #print(str(os.environ['PASSWD']))
             server.login(str(os.environ['EMAIL']), str(os.environ['PASSWD']))
             server.sendmail(me, you, msg.as_string())
-            print("Sent")
+            return True
         except:
             try:
                 del(server)
@@ -81,11 +81,20 @@ def send_mail(mail_subject, mail_body, to_email):
                 #print(str(os.environ['PASSWD']))
                 server.login(str(os.environ['EMAIL']), str(os.environ['PASSWD']))
                 server.sendmail(me, you, msg.as_string())
-                print("Sent")
+                return True
             except:
-                msg = "Got error while sending mail to "+to_email
-                utils.slack_notification(msg)
-                return False
+                try:
+                    sg = sendgrid.SendGridAPIClient(apikey=os.environ["DEFCON_SENDGRID"])
+                    from_email = Email("Kharagpur Open Source Society <{}>".format(os.environ["EMAIL"]))
+                    content = Content("text/html", mail_body)
+                    to_email = Email(to_email)
+                    mail = Mail(from_email=from_email, subject=mail_subject, to_email=to_email, content=mail_body)
+                    sg.client.mail.send.post(request_body=mail.get())
+                    return True
+                except:
+                    msg = "Got error while sending mail to "+to_email
+                    utils.slack_notification(msg)
+                    return False
 
 
 
