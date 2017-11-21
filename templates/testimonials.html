@@ -1,4 +1,5 @@
 <!doctype html>
+{% import 'helper_macros.html' as helpers %}
 <html class="no-js" lang="en">
     <head>
         <title>Kharagpur Winter of Code | Testimonials</title>
@@ -208,81 +209,16 @@
 
         <!-- footer -->
         <footer>
-
-            <div class="container footer-middle" style="align-content: center;">
-              <div class="row">
-                  <div class="col-md-12 footer-link1">
-                      <!-- headline -->
-                      <h5>About KOSS</h5>
-                      <!-- end headline -->
-                      <!-- text -->
-                      <p class="footer-text">We are a group of Open Source Enthusiasts who focus on something more
-                          preliminary and relevant, ”A Love for Coding”.
-                      </p>
-                      <!-- end text -->
-                  </div>
-              </div>
-                <div class="wide-separator-line bg-mid-gray no-margin-lr margin-three no-margin-bottom"></div>
-                <div class="row margin-four no-margin-bottom">
-                    <div class="col-md-6 col-sm-12 sm-text-center sm-margin-bottom-four">
-                        <!-- link -->
-                        <ul class="list-inline footer-link text-uppercase">
-                            <li><a href="https://kossiitkgp.in">About</a></li>
-                            <li><a href="https://blog.kossiitkgp.in/">Blog</a></li>
-                            <li><a href="{{ url_for('testimonials') }}">Testimonials</a></li>
-                        </ul>
-                        <!-- end link -->
-                    </div>
-                    <div class="col-md-6 col-sm-12 footer-social text-right sm-text-center">
-                        <!-- social media link -->
-                        <a target="_blank" href="https://www.facebook.com/kossiitkgp/"><i class="fa fa-facebook"></i></a>
-                          <a target="_blank" href="mailto:contact@kossiitkgp.in"><i class="fa fa-envelope"></i></a>
-                        <a target="_blank" href="https://github.com/kossiitkgp"><i class="fa fa-github"></i></a>
-                        <!-- end social media link -->
-                    </div>
-                </div>
-            </div>
+            {{ helpers.pre_footer() }}
+            <!-- footer_final -->
+            {{ helpers.end_footer() }}
+            <!-- end footer -->
             <!-- scroll to top -->
             <a href="javascript:;" class="scrollToTop"><i class="fa fa-angle-up"></i></a>
             <!-- scroll to top End... -->
         </footer>
         <!-- end footer -->
-
         <!-- javascript libraries -->
-        <script type="text/javascript" src="/static/js/jquery.min.js"></script>
-        <script type="text/javascript" src="/static/js/modernizr.js"></script>
-        <script type="text/javascript" src="/static/js/bootstrap.js"></script>
-        <script type="text/javascript" src="/static/js/bootstrap-hover-dropdown.js"></script>
-        <script type="text/javascript" src="/static/js/jquery.easing.1.3.js"></script>
-        <script type="text/javascript" src="/static/js/skrollr.min.js"></script>
-        <script type="text/javascript" src="/static/js/smooth-scroll.js"></script>
-        <!-- animation -->
-        <script type="text/javascript" src="/static/js/wow.min.js"></script>
-        <!-- page scroll -->
-        <script type="text/javascript" src="/static/js/page-scroll.js"></script>
-        <!-- easy piechart-->
-        <script type="text/javascript" src="/static/js/jquery.easypiechart.js"></script>
-        <!-- parallax -->
-        <script type="text/javascript" src="/static/js/jquery.parallax-1.1.3.js"></script>
-        <!--portfolio with shorting tab -->
-        <script type="text/javascript" src="/static/js/jquery.isotope.min.js"></script>
-        <!-- owl slider  -->
-        <script type="text/javascript" src="/static/js/owl.carousel.min.js"></script>
-        <!-- magnific popup  -->
-        <script type="text/javascript" src="/static/js/jquery.magnific-popup.min.js"></script>
-        <script type="text/javascript" src="/static/js/popup-gallery.js"></script>
-        <!-- text effect  -->
-        <script type="text/javascript" src="/static/js/text-effect.js"></script>
-        <!-- revolution slider  -->
-        <script type="text/javascript" src="/static/js/jquery.tools.min.js"></script>
-        <script type="text/javascript" src="/static/js/jquery.revolution.js"></script>
-        <!-- counter  -->
-        <script type="text/javascript" src="/static/js/counter.js"></script>
-        <!-- fit videos  -->
-        <script type="text/javascript" src="/static/js/jquery.fitvids.js"></script>
-        <!-- imagesloaded  -->
-        <script type="text/javascript" src="/static/js/imagesloaded.pkgd.min.js"></script>
-        <!-- setting -->
-        <script type="text/javascript" src="/static/js/main.js"></script>
+        {{ helpers.js_libraries() }}
     </body>
 </html>
